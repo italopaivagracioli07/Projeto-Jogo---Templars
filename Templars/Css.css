@@ -1,0 +1,62 @@
+/* Estilos globais da página e bloqueio de seleção/rolagem acidental em telas de toque */
+body {
+font-family: 'Inter', sans-serif;
+background-color: #0f172a;
+color: #f8fafc;
+margin: 0;
+overflow: hidden;
+user-select: none;
+touch-action: manipulation;
+}
+
+/* Tipografia pixelada para títulos, HUD e menus retrô */
+.retro-font {
+font-family: 'Press Start 2P', monospace;
+}
+
+/* Mantém os pixels nítidos no renderizador do jogo */
+canvas {
+display: block;
+image-rendering: pixelated;
+image-rendering: crisp-edges;
+background-color: #38bdf8;
+}
+
+/* Botão principal estilizado em visual retrô */
+.retro-btn {
+background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+border: 3px solid #fef08a;
+box-shadow: 0 4px 0 #7f1d1d, 0 6px 12px rgba(0, 0, 0, 0.4);
+border-radius: 10px;
+}
+
+.retro-btn:active {
+transform: translateY(3px);
+box-shadow: 0 1px 0 #7f1d1d;
+}
+
+/* Botões direcionais e de pulo para dispositivos móveis */
+.dpad-btn {
+background: rgba(30, 41, 59, 0.8);
+border: 2px solid rgba(255, 255, 255, 0.35);
+backdrop-filter: blur(4px);
+border-radius: 14px;
+}
+
+.dpad-btn:active {
+background: rgba(71, 85, 105, 0.95);
+transform: scale(0.95);
+}
+
+/* Botões de poderes e habilidades para dispositivos móveis */
+.power-btn {
+background: rgba(15, 23, 42, 0.88);
+border: 2px solid rgba(250, 204, 21, 0.65);
+backdrop-filter: blur(4px);
+border-radius: 14px;
+}
+
+.power-btn:active {
+background: rgba(51, 65, 85, 0.95);
+transform: scale(0.95);
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Templar Bros - Natureza & Boss Demônio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-slate-950 p-2 sm:p-4">
+
+    <!-- Main Game Wrapper -->
+    <div id="gameWrapper" class="relative w-full max-w-6xl flex flex-col items-center">
+        <!-- Responsive Canvas Container -->
+        <div id="canvasContainer" class="relative w-full rounded-xl overflow-hidden shadow-2xl border-4 border-slate-800 bg-sky-400">
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Start / Game Over Overlay -->
+            <div id="overlayMenu" class="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/90 to-slate-950/95 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-20 rounded-lg overflow-y-auto">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-2">
+                    Aventura Medieval na Natureza
+                </span>
+                <h1 id="overlayTitle" class="retro-font text-xl sm:text-3xl md:text-5xl text-yellow-400 mb-2 drop-shadow-[0_4px_0_rgba(180,83,9,1)]">
+                    SUPER TEMPLAR BROS
+                </h1>
+                <p id="overlaySubtitle" class="text-slate-200 max-w-2xl text-xs sm:text-sm mb-4 leading-relaxed">
+                    Acumule poderes nas caixas <span class="inline-block px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 font-bold text-[10px]">?</span>, atravesse fases da natureza e enfrente o <span class="text-red-400 font-bold">Boss Demônio</span> na fase final!
+                </p>
+
+                <!-- Structured Button Guide -->
+                <div id="controlsGuide" class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-5 text-left">
+                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5">
+                        <div class="text-[11px] font-bold text-amber-300 mb-1">🏃 Movimento &amp; Pulo</div>
+                        <div class="text-[11px] text-slate-300 space-y-0.5">
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">A/D</kbd> ou <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">◄/►</kbd> Andar</div>
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">Espaço/W</kbd> Pular (2x com Pulo Duplo)</div>
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">Shift</kbd> Correr mais rápido</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5">
+                        <div class="text-[11px] font-bold text-sky-300 mb-1">⚔️ Ataques &amp; Projéteis</div>
+                        <div class="text-[11px] text-slate-300 space-y-0.5">
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">X / J</kbd> Fogo, Gelo ou Lançar Espada</div>
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">F / Q</kbd> Corte de Espada &amp; Chicote</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5 sm:col-span-2 lg:col-span-1">
+                        <div class="text-[11px] font-bold text-emerald-300 mb-1">🛡️ Táticas &amp; Regras</div>
+                        <div class="text-[11px] text-slate-300 space-y-0.5">
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">C / K</kbd> Muro • <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">V / L</kbd> Empurrar</div>
+                            <div><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-600 rounded text-[10px] text-white">E</kbd> Dash • Escudo dura 2 golpes</div>
+                            <div class="text-[10px] text-amber-200/90 pt-0.5">Poderes somem ao morrer ou passar de fase.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="startBtn" onclick="startGame()" class="retro-btn px-7 py-3 text-sm md:text-base font-bold text-white uppercase tracking-wider cursor-pointer hover:brightness-110 transition-all">
+                    JOGAR AGORA
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Touch Controls -->
+        <div class="w-full max-w-5xl flex justify-between items-center mt-2 px-2 md:hidden select-none">
+            <div class="flex gap-2">
+                <button id="btnLeft" class="dpad-btn w-12 h-12 flex items-center justify-center text-lg font-bold text-white">◄</button>
+                <button id="btnRight" class="dpad-btn w-12 h-12 flex items-center justify-center text-lg font-bold text-white">►</button>
+            </div>
+            <div class="flex flex-wrap gap-1.5 justify-end max-w-[72%]">
+                <button id="btnAttack" class="power-btn w-10 h-10 flex items-center justify-center text-xs font-bold text-white">⚔️</button>
+                <button id="btnWall" class="power-btn w-10 h-10 flex items-center justify-center text-xs font-bold text-white">🧱</button>
+                <button id="btnPush" class="power-btn w-10 h-10 flex items-center justify-center text-xs font-bold text-white">💨</button>
+                <button id="btnDash" class="power-btn w-10 h-10 flex items-center justify-center text-xs font-bold text-white">⚡</button>
+                <button id="btnWhip" class="power-btn w-10 h-10 flex items-center justify-center text-xs font-bold text-white">🗡️</button>
+                <button id="btnJump" class="dpad-btn w-12 h-10 bg-red-500/50 border-red-300 flex items-center justify-center text-[10px] font-bold text-white">PULO</button>
+            </div>
+        </div>
+
+        <!-- Keyboard Instructions Footer -->
+        <div class="hidden md:flex justify-between w-full text-[10px] text-slate-400 mt-2 px-2">
+            <span>[◄/A ►/D] Mover</span>
+            <span>[Espaço/W] Pulo/2x</span>
+            <span>[X/J] Fogo/Gelo/Espada</span>
+            <span>[C/K] Muro</span>
+            <span>[V/L] Empurrar</span>
+            <span>[E] Dash | [F/Q] Espada/Chicote</span>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
